@@ -1,31 +1,60 @@
-<!-- app/views/weather/forecast.html.erb -->
-<h1>Weather Forecast</h1>
-
-<%= form_tag weather_forecast_path, method: :get do %>
-  <%= label_tag :city, 'City:' %>
-  <%= text_field_tag :city, params[:city] %>
-  <%= submit_tag 'Search' %>
-<% end %>
-
-<% if @forecast %>
-  <table>
-    <thead>
-      <tr>
-        <th>Date</th>
-        <th>High Temp</th>
-        <th>Low Temp</th>
-        <th>Weather</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @forecast.each do |entry| %>
-        <tr>
-          <td><%= entry['dt_txt'] %></td>
-          <td><%= entry['main']['temp_max'].round(2) %> °C</td>
-          <td><%= entry['main']['temp_min'].round(2) %> °C</td>
-          <td><%= entry['weather'].first['description'].capitalize %></td>
-        </tr>
+<section class="banner-wrapper">
+    <% if @error_message %>
+      <div id="error-alert" class="alert alert-danger alert-dismissible fade show" style="width: fit-content; float: right; margin-top: 17px; ">
+          <strong>Error! </strong><%= @error_message %>
+          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+      </div>    
+    <% end %>
+    <div class="container pt-5">
+      <h1 class="heading">Weather Forecast</h1>
+      <div>
+        <%= form_tag weather_forecast_path, method: :get do %>
+          <%= text_field_tag :city, params[:city], class: 'searchbar', id: 'search', placeholder: 'Search for city' %>
+          <%= submit_tag 'Search', class: 'btn custom-btn'%>
+        <% end %>
+      </div>
+      <% if @current_weather %>
+        <div class="row">
+          <div class="col-md-5">
+            <div class="forecast-main">
+              <div class="forecast-text">
+                <h2><%= @current_weather['name'] %></h2>
+                <p><%= Time.now.strftime("%d-%m-%Y, %H:%M") %></p>
+                <p>Humidity : <%= @current_weather['main']['humidity'] %> %</p>
+                <h2><%= @current_weather['main']['temp'] %> °C</h2>
+              </div>
+              <div class="forecast-image">
+                <img src="/assets/cloudy.png" class="img-fluid">
+              </div>
+            </div>
+          </div>
       <% end %>
-    </tbody>
-  </table>
-<% end %>
+      <% if @forecast %>
+        <div class="col-md-7">
+            <div class="forecast-description">
+              <table class="table">
+               <thead>
+                  <tr>
+                    <th scope="col">Date</th>
+                    <th scope="col">High Temp</th>
+                    <th scope="col">Low Temp</th>
+                    <th scope="col">Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% @forecast.each do |entry| %>
+                    <tr>
+                      <th scope="row"><%= entry[0]['dt_txt'].to_date.strftime("%d-%m-%Y") %></td>
+                      <td><%= entry[0]['main']['temp'].round(2) %> °C</td>
+                      <td><%= entry[1]['main']['temp'].round(2) %> °C</td>
+                      <td><%= entry[0]['weather'].first['description'].capitalize %></td>
+                    </tr>
+                  <% end %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+      <% end %>
+    </div>
+  </div>
+</section>

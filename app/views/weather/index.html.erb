@@ -1,8 +1,15 @@
-<!-- app/views/weather/forecast.html.erb -->
-<h1>Weather Forecast</h1>
+<!-- app/views/weather/index.html.erb -->
+<section class="banner-wrapper">
+  <div class="container pt-5">
+    <h1 class="heading">Weather Forecast</h1>
+      <div class="">
+        <%= form_tag weather_forecast_path, method: :get, id: 'weather-form' do %>
+          <%= text_field_tag :city, params[:city], class: 'searchbar', id: 'search', placeholder: 'Search for city' %>
+          <%= hidden_field_tag :latitude, '', id: 'latitude' %>
+          <%= hidden_field_tag :longitude, '', id: 'longitude' %>
+          <%= submit_tag 'Search', class: 'btn custom-btn' %>
+        <% end %>
+      </div>
 
-<%= form_tag weather_forecast_path, method: :get do %>
-  <%= label_tag :city, 'City:' %>
-  <%= text_field_tag :city, params[:city] %>
-  <%= submit_tag 'Search' %>
-<% end %>
+    </div>
+</section>

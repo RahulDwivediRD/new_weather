@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe OpenWeatherMap::Geocode do
-  let(:api_key)   { Rails.application.credentials.open_weather_map[:api_key] }
+  let(:api_key)   { '50252dba5181c81f776a0386add463a7' || Rails.application.credentials.open_weather_map[:api_key] }
   let(:geocoder)  { OpenWeatherMap::Geocode.new(api_key) }
   let(:city)      { 'London' }
 
